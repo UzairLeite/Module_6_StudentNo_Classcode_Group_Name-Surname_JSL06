@@ -8,72 +8,76 @@ const menu = {
 // Function to display menu items by category
 function displayMenuItems(menu) {
     // Get the menu container element from the HTML
-    const menuContainer = document.getElementById("menu-container");
+     const menuContainer = document.getElementById('menu');
+     if (!menuContainer){
+        console.error('Menu container not found');
+        return
+     }
 
     // Loop through each category and its items in the menu object      
     for (const category in menu) {
-        if (menu.hasOwnProperty(category)){
         // Create an element to represent the category
-        const categoryElement = document.createElement("h2");
-        // Set the text content of the category element to the category name
+        const categoryElement = document.createElement('h3');
         categoryElement.textContent = category;
-        // Append the category element to the menu container
         menuContainer.appendChild(categoryElement);
+
         // Create an element to represent a list of items
-        const listElement = document.createElement("ul");
+        const itemList = document.createElement('ul');
         // Append a list of items element to the menu container
-        menuContainer.appendChild(listElement);
+        //menuContainer.appendChild(listElement);
+
         // Loop through the items in the category and create list items
-            menu[category].array.forEach(item => {
+            menu[category].forEach(item => {
                 // Create a list item element
-                const listItem = document.createElement("li");
+                const listItem = document.createElement('li');
                 // Set the text content of the list item element to the item name
                 listItem.textContent = item;
                 // Attach a click event listener to the list item to add it to the order
-                listItem.addEventListener("click", () => {
-                addToOrder(item);
+                listItem.addEventListener('click', () => addToOrder(item));
                 // Append the list item to the list of items
                 itemList.appendChild(listItem);
-                });
             });
-        }
-    }          
+    };
+    
+          
 }
 
 // Callback function for adding an item to the order
 function addToOrder(itemName) {
     // Get the order items list and the order total element from the HTML
-    const orderItemsList = document.getElementById("order-items");
-    const orderTotalElement = document.getElementById("order-total");
-    // Create a list item for the order
-    const orderListItem = document.createElement("li");
-    // Set the text content of the list item to the item name
-    orderListItem.textContent = itemName;
-    // Append the list item to the order items list
-    orderItemsList.appendChild(orderListItem);
-    // Calculate and update the total price
-    const prices = {
-        "Garlic Bread": 10,
-        "Bruschetta": 12,
-        "Crumbed Mushrooms": 15,
-        "Margherita Pizza": 25,
-        "Spaghetti Carbonara": 36,
-        "Cheddermelt Steak": 55,
-        "Tiramisu": 21,
-        "Cheesecake": 22,
-        "Brownie": 16,
-    }
-    const itemPrice = prices[itemName];
+    const orderItems = document.getElementById('order-items');
+    const orderTotalElement = document.getElementById('order-total');
 
-    let currentTotal = parseFloat(orderTotalElement.textContent.replace('$', ' '));
-    currentTotal += itemPrice;
+    // Create a list item for the order
+    const orderItem = document.createElement('li');
+    // Set the text content of the list item to the item name
+    orderItem.textContent = itemName;
+    // Append the list item to the order items list
+    orderItems.appendChild(orderItem);
+    // Item prices
+    const prices = {
+        "Garlic Bread": 25,
+        "Bruschetta": 30,
+        "Crumbed Mushrooms": 40,
+        "Margherita Pizza": 50,
+        "Spaghetti Carbonara": 65,
+        "Cheddermelt Steak": 105,
+        "Tiramisu": 40,
+        "Cheesecake": 45,
+        "Brownie": 30,
+    }
+    // Calculate and update the total price
+    const price = 10.00;
+    const currentTotal = parseFloat(orderTotalElement.textContent);
+    const newTotal = currentTotal + price;
+
     // Update the text content of the order total element with the new total
-    orderTotalElement.textContent = `$${currentTotal.toFixed(2)}`
+    orderTotalElement.textContent = newTotal.toFixed(2);
 }
 
 // Function to initialize the menu system
-function initMenuSystem(menu) {
-    // Call the function to display menu items
+function initMenuSystem(menu) { 
+    displayMenuItems(menu); // Call the function to display menu items
 }
 
 // Start the menu system by calling the init function
